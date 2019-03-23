@@ -5,37 +5,45 @@ class NonNumberError(Exception):
 class AttemptedExitError(Exception):
     pass
 
-def isbn(num):
+def isbn(isbn_num):
     num_list = []
     count = 0
     sums = 0
-    for n in num:
+    for n in isbn_num:
         if n == "e":
             raise AttemptedExitError
-        if n not in "0123456789":
+        elif n not in "0123456789":
             raise NonNumberError("The entered ISBN contains character(s) which are not valid numbers.")
-        num_list.append(n)
-        count = count + 1
+        else:
+            num_list.append(n)
+            count = count + 1
     if count == 10:
         for num in num_list:
             product = int(num) * count
             sums = sums + int(product)
             count = count - 1
         if (sums % 11) == 0:
-            print("%s is a valid ISBN number." % (num))
+            print("%s is a valid ISBN number." % (isbn_num))
             
         else:
-            print("%s is not a valid ISBN number." % (num))
+            print("%s is not a valid ISBN number." % (isbn_num))
             
     elif count == 13:
         for num in num_list:
-            pass
-            # determine number's posistion (odd or even)
-            # multiply by 1 or 3 respectively 
-            # add to total 
-            # divide by 10 and if the remainder is 0, the IBSN is valid
+            posistion = num_list.index(num) + 1
+            
+            if posistion % 2 == 0:
+                product = int(num) * 3
+            else:
+                product = int(num) * 1
+            sums = sums + product
+        if int(sums) % 10 == 0:
+            print("%s is a valid ISBN number." % (isbn_num))
+        else:
+            print("%s is not a valid ISBN number." % (isbn_num))
+
     else:
-        raise InValidNumberError("%s is not a valid ISBN number. A Valid ISBN number must be either 10 or 13 digits" % (num))
+        raise InValidNumberError("%s is not a valid ISBN number. A Valid ISBN number must be either 10 or 13 digits" % (isbn_num))
         
 
     
